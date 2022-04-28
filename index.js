@@ -1,3 +1,4 @@
 const marcar = require('./src/marcar-ponto');
-
-marcar();
+const login = require('./config');
+console.log(login.login);
+// marcar();
