@@ -3,7 +3,7 @@ const puppeteer = require('puppeteer'); // v13.0.0 or later
 module.exports = async function(dados_ponto) {
     const browser = await puppeteer.launch({headless: false});
     const page = await browser.newPage();
-    const timeout = 5000;
+    const timeout = 20000;
     page.setDefaultTimeout(timeout);
 
     async function waitForSelectors(selectors, frame, options) {
