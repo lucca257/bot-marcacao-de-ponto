@@ -1,6 +1,6 @@
 const puppeteer = require('puppeteer'); // v13.0.0 or later
 
-module.exports = async function() {
+module.exports = async function(login) {
     const browser = await puppeteer.launch({headless: false});
     const page = await browser.newPage();
     const timeout = 5000;
@@ -165,7 +165,7 @@ module.exports = async function() {
         await scrollIntoViewIfNeeded(element, timeout);
         const type = await element.evaluate(el => el.type);
         if (["textarea","select-one","text","url","tel","search","password","number","email"].includes(type)) {
-          await element.type('13864107725');
+          await element.type(login.username);
         } else {
           await element.focus();
           await element.evaluate((el, value) => {
@@ -181,7 +181,7 @@ module.exports = async function() {
         await scrollIntoViewIfNeeded(element, timeout);
         const type = await element.evaluate(el => el.type);
         if (["textarea","select-one","text","url","tel","search","password","number","email"].includes(type)) {
-          await element.type('123456');
+          await element.type(login.password);
         } else {
           await element.focus();
           await element.evaluate((el, value) => {
