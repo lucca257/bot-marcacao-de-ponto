@@ -1,6 +1,6 @@
 const puppeteer = require('puppeteer'); // v13.0.0 or later
 
-module.exports = async function(login) {
+module.exports = async function(dados_ponto) {
     const browser = await puppeteer.launch({headless: false});
     const page = await browser.newPage();
     const timeout = 5000;
@@ -165,7 +165,7 @@ module.exports = async function(login) {
         await scrollIntoViewIfNeeded(element, timeout);
         const type = await element.evaluate(el => el.type);
         if (["textarea","select-one","text","url","tel","search","password","number","email"].includes(type)) {
-          await element.type(login.username);
+          await element.type(dados_ponto.username);
         } else {
           await element.focus();
           await element.evaluate((el, value) => {
@@ -181,7 +181,7 @@ module.exports = async function(login) {
         await scrollIntoViewIfNeeded(element, timeout);
         const type = await element.evaluate(el => el.type);
         if (["textarea","select-one","text","url","tel","search","password","number","email"].includes(type)) {
-          await element.type(login.password);
+          await element.type(dados_ponto.password);
         } else {
           await element.focus();
           await element.evaluate((el, value) => {
@@ -290,14 +290,14 @@ module.exports = async function(login) {
         await scrollIntoViewIfNeeded(element, timeout);
         const type = await element.evaluate(el => el.type);
         if (["textarea","select-one","text","url","tel","search","password","number","email"].includes(type)) {
-          await element.type('09:00');
+          await element.type(dados_ponto.horario_entrada);
         } else {
           await element.focus();
           await element.evaluate((el, value) => {
             el.value = value;
             el.dispatchEvent(new Event('input', { bubbles: true }));
             el.dispatchEvent(new Event('change', { bubbles: true }));
-          }, "09:00");
+          }, dados_ponto.horario_entrada);
         }
     }
     {
@@ -313,14 +313,14 @@ module.exports = async function(login) {
         await scrollIntoViewIfNeeded(element, timeout);
         const type = await element.evaluate(el => el.type);
         if (["textarea","select-one","text","url","tel","search","password","number","email"].includes(type)) {
-          await element.type('12:00');
+          await element.type(dados_ponto.horario_entrada_intervalo);
         } else {
           await element.focus();
           await element.evaluate((el, value) => {
             el.value = value;
             el.dispatchEvent(new Event('input', { bubbles: true }));
             el.dispatchEvent(new Event('change', { bubbles: true }));
-          }, "12:00");
+          }, dados_ponto.horario_entrada_intervalo);
         }
     }
     {
@@ -336,14 +336,14 @@ module.exports = async function(login) {
         await scrollIntoViewIfNeeded(element, timeout);
         const type = await element.evaluate(el => el.type);
         if (["textarea","select-one","text","url","tel","search","password","number","email"].includes(type)) {
-          await element.type('13:00');
+          await element.type(dados_ponto.horario_saido_intervalo);
         } else {
           await element.focus();
           await element.evaluate((el, value) => {
             el.value = value;
             el.dispatchEvent(new Event('input', { bubbles: true }));
             el.dispatchEvent(new Event('change', { bubbles: true }));
-          }, "13:00");
+          }, dados_ponto.horario_saido_intervalo);
         }
     }
     {
@@ -359,14 +359,14 @@ module.exports = async function(login) {
         await scrollIntoViewIfNeeded(element, timeout);
         const type = await element.evaluate(el => el.type);
         if (["textarea","select-one","text","url","tel","search","password","number","email"].includes(type)) {
-          await element.type('18:00');
+          await element.type(dados_ponto.horario_saida);
         } else {
           await element.focus();
           await element.evaluate((el, value) => {
             el.value = value;
             el.dispatchEvent(new Event('input', { bubbles: true }));
             el.dispatchEvent(new Event('change', { bubbles: true }));
-          }, "18:00");
+          }, dados_ponto.horario_saida);
         }
     }
     {
