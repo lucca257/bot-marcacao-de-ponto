@@ -239,6 +239,44 @@ const puppeteer = require('puppeteer'); // v13.0.0 or later
         await scrollIntoViewIfNeeded(element, timeout);
         await element.click({ offset: { x: 12.75, y: 16.609375} });
     }
+
+    {
+      const targetPage = page;
+      const element = await waitForSelectors([["aria/Abono do Gestor[role=\"generic\"]"],["#select2-ctl-977ff251-74a6-4521-b181-eb74b91ed409-container"]], targetPage, { timeout, visible: true });
+      await scrollIntoViewIfNeeded(element, timeout);
+      await element.click({ offset: { x: 145.3125, y: 6.609375} });
+  }
+  {
+      const targetPage = page;
+      const element = await waitForSelectors([["body > span > span > span.select2-search.select2-search--dropdown > input"]], targetPage, { timeout, visible: true });
+      await scrollIntoViewIfNeeded(element, timeout);
+      await element.click({ offset: { x: 118.3125, y: 20.609375} });
+  }
+  {
+      const targetPage = page;
+      const element = await waitForSelectors([["body > span > span > span.select2-search.select2-search--dropdown > input"]], targetPage, { timeout, visible: true });
+      await scrollIntoViewIfNeeded(element, timeout);
+      const type = await element.evaluate(el => el.type);
+      if (["textarea","select-one","text","url","tel","search","password","number","email"].includes(type)) {
+        await element.type('home');
+      } else {
+        await element.focus();
+        await element.evaluate((el, value) => {
+          el.value = value;
+          el.dispatchEvent(new Event('input', { bubbles: true }));
+          el.dispatchEvent(new Event('change', { bubbles: true }));
+        }, "home");
+      }
+  }
+  {
+      const targetPage = page;
+      await targetPage.keyboard.down("Enter");
+  }
+  {
+      const targetPage = page;
+      await targetPage.keyboard.up("Enter");
+  }
+
     {
         const targetPage = page;
         const element = await waitForSelectors([["aria/Hora Marcação I"],["#ctl-49c05db4-1357-45be-bb10-2b87369b52ed"]], targetPage, { timeout, visible: true });
@@ -359,6 +397,5 @@ const puppeteer = require('puppeteer'); // v13.0.0 or later
         await scrollIntoViewIfNeeded(element, timeout);
         await element.click({ offset: { x: 76, y: 17.796875} });
     }
-
     await browser.close();
 })();
