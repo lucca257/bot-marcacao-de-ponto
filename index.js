@@ -396,6 +396,7 @@ const puppeteer = require('puppeteer'); // v13.0.0 or later
         const element = await waitForSelectors([["aria/Enviar Solicitação"],["#btnEnviar"]], targetPage, { timeout, visible: true });
         await scrollIntoViewIfNeeded(element, timeout);
         await element.click({ offset: { x: 76, y: 17.796875} });
+        await targetPage.waitForNavigation()
     }
     await browser.close();
 })();
