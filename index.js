@@ -45,9 +45,9 @@ async function askQuestions(){
       rl.close();
       return;
     }
-    rl.close();
-    await marcar(dados_ponto);
   }
+  rl.close();
+  await marcar(dados_ponto);
 }
 
 (async () => {
