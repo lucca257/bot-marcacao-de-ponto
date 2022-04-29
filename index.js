@@ -22,11 +22,10 @@ async function askQuestions(){
     horario_saido_intervalo : "13:00",
     horario_saida : "18:00",
     data : dia + '/' + mes + '/' + ano,
-    ...login
   }
   let answer = await question("deseja marcar ponto padrao? (s/n):  ")
   if(answer !== 's') {
-    dados_ponto.data = await question("qual data deseja marcar ? (dd/mm/aaaa)");
+    dados_ponto.data = await question("qual data deseja marcar ? (dd/mm/aaaa):  ");
     answer = await question("horario padrao? (s/n):  ")
     if (answer !== 's') {
       dados_ponto.horario_entrada = await question("horario I:  ");
@@ -34,12 +33,7 @@ async function askQuestions(){
       dados_ponto.horario_saido_intervalo = await question("horario III:  ");
       dados_ponto.horario_saida = await question("horario IV:  ");
     }
-    console.log("dados do ponto: ", {
-      horario_entrada: dados_ponto.horario_entrada,
-      horario_entrada_intervalo: dados_ponto.horario_entrada_intervalo,
-      horario_saido_intervalo: dados_ponto.horario_saido_intervalo,
-      horario_saida: dados_ponto.horario_saida,
-    });
+    console.log("dados do ponto: ", dados_ponto);
     answer = await question("os horarios estao corretos ? (s/n):  ")
     if (answer !== 's') {
       rl.close();
@@ -47,7 +41,12 @@ async function askQuestions(){
     }
   }
   rl.close();
-  await marcar(dados_ponto);
+  await marcar({
+    ...dados_ponto,
+    ...login
+  }).then(() => {
+    console.log("ponto marcado com sucesso!");
+  });
 }
 
 (async () => {

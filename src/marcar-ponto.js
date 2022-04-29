@@ -229,15 +229,20 @@ module.exports = async function(dados_ponto) {
     }
     {
         const targetPage = page;
-        const element = await waitForSelectors([["body > div > div.main_container > div.right_col > div > div.row > div > div > div.x_content > div > form > div:nth-child(6) > div.col-md-6.col-lg-6.col-lgx-5.col-sm-12.col-xs-12 > div > span > i"]], targetPage, { timeout, visible: true });
+        let frame = targetPage.mainFrame();
+        const element = await waitForSelectors([["aria/Data da Marcação"],["#ctl-9150bd47-10bc-4407-aac6-64cc58184ba5"]], frame, { timeout, visible: true });
         await scrollIntoViewIfNeeded(element, timeout);
-        await element.click({ offset: { x: 2.5, y: 7.609375} });
-    }
-    {
-        const targetPage = page;
-        const element = await waitForSelectors([["body > div > div.main_container > div.right_col > div > div.row > div > div > div.x_content > div > form > div:nth-child(6) > div.col-md-6.col-lg-6.col-lgx-5.col-sm-12.col-xs-12 > div > div > ul > li:nth-child(1) > div > div.datepicker-days > table > tbody > tr:nth-child(5) > td.day.active.today"]], targetPage, { timeout, visible: true });
-        await scrollIntoViewIfNeeded(element, timeout);
-        await element.click({ offset: { x: 12.75, y: 16.609375} });
+        const type = await element.evaluate(el => el.type);
+        if (["textarea","select-one","text","url","tel","search","password","number","email"].includes(type)) {
+            await element.type(`${dados_ponto.data}`);
+        } else {
+            await element.focus();
+            await element.evaluate((el, value) => {
+                el.value = value;
+                el.dispatchEvent(new Event('input', { bubbles: true }));
+                el.dispatchEvent(new Event('change', { bubbles: true }));
+            }, `${dados_ponto.data}`);
+        }
     }
 
     {
