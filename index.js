@@ -44,6 +44,7 @@ async function askQuestions(){
     }
   }
   rl.close();
+  console.log("Marcando ponto...");
   await marcar({
     ...dados_ponto,
     ...login

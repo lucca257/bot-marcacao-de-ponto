@@ -10,7 +10,7 @@ class Logger {
             if (err) {
               console.error(err);
             }
-            return console.log(123);  
+            return true;  
           });
     }
 
