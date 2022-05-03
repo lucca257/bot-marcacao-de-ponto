@@ -1,11 +1,14 @@
 const marcar = require('./src/marcar-ponto');
 const login = require('./config');
 const readline = require('readline');
+const Logger = require('./src/logger');
 
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout
 });
+
+const logger = new Logger();
 
 function question(theQuestion) {
   return new Promise(resolve => rl.question(theQuestion, answ => resolve(answ)))
@@ -45,6 +48,7 @@ async function askQuestions(){
     ...dados_ponto,
     ...login
   }).then(() => {
+    logger.escreverLog(dados_ponto)
     console.log("ponto marcado com sucesso!");
   });
 }
