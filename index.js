@@ -14,6 +14,11 @@ function question(theQuestion) {
   return new Promise(resolve => rl.question(theQuestion, answ => resolve(answ)))
 }
 
+function prepareDataFromString(strData){
+  let [ano, mes, dia] = strData.split('-');
+  return new Date(ano, mes-1, dia);
+}
+
 async function askQuestions(){
   const data = new Date();
   let dia = String(data.getDate()).padStart(2, '0');
@@ -26,6 +31,7 @@ async function askQuestions(){
     horario_saida : "18:00",
     data : dia + '/' + mes + '/' + ano,
   }
+
   let answer = await question("deseja marcar ponto padrao? (s/n):  ")
   if(answer !== 's') {
     dados_ponto.data = await question("qual data deseja marcar ? (dd/mm/aaaa):  ");
@@ -43,15 +49,31 @@ async function askQuestions(){
       return;
     }
   }
-  rl.close();
-  console.log("Marcando ponto...");
-  await marcar({
-    ...dados_ponto,
-    ...login
-  }).then(() => {
-    logger.escreverLog(dados_ponto)
-    console.log("ponto marcado com sucesso!");
-  });
+
+  let dateInterval = await question("Quais dias deseja marcar? (Y-m-d~Y-m-d):")
+  let [strIni, strFim] = dateInterval.split('~');
+  let dataAtualDeMarcacao = prepareDataFromString(strIni);
+  dataAtualDeMarcacao.setDate(dataAtualDeMarcacao.getDate()-1)
+
+  while (dataAtualDeMarcacao < prepareDataFromString(strFim)) {
+    dataAtualDeMarcacao.setDate(dataAtualDeMarcacao.getDate()+1);
+    if ([0,6].indexOf(dataAtualDeMarcacao.getDay()) != -1) {
+      continue;
+    }
+    dia = String(dataAtualDeMarcacao.getDate()).padStart(2, '0');
+    mes = String(dataAtualDeMarcacao.getMonth() + 1).padStart(2, '0');
+    ano = dataAtualDeMarcacao.getFullYear();
+    dados_ponto.data = dia + '/' + mes + '/' + ano;
+    console.log("Marcando ponto("+dados_ponto.data+")...");
+    await marcar({
+      ...dados_ponto,
+      ...login
+    }).then(() => {
+      logger.escreverLog(dados_ponto)
+      console.log("ponto marcado com sucesso!");
+    });
+    
+  }
 }
 
 (async () => {
